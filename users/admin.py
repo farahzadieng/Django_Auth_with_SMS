@@ -5,7 +5,6 @@ from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
     add_form = SignUpForm
-    # form = None
     model = CustomUser
     list_display = ('username', 'is_staff', 'is_active', )
     fieldsets = UserAdmin.fieldsets + (
