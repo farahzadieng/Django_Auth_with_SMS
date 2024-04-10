@@ -11,4 +11,6 @@ class SignUpForm(ModelForm):
         phone_number = self.cleaned_data['phone_number']
         if user_list.objects.filter(phone_number=phone_number).exists():
             raise ValidationError('Phone Number already registered on website.')
+        if len('phone_number') != 11 and 'phone_number'[0:1] != '09':
+            raise ValidationError('Please enter a correct phone number.')
         return phone_number
