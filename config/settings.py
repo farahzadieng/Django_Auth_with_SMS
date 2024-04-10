@@ -11,17 +11,24 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
+
+env = environ.Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-fgmq+n3sj8gj7_x8$re5&8tj+_xu=_j!w0%_7+kr(+=#qi9qu-'
-
+SECRET_KEY = env('SECRET_KEY')
+print(SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -55,7 +62,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [str(BASE_DIR.joinpath('templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,4 +130,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# SMS Provider API 
+SMS_API = {
+    'username' : env('username'),
+    'password' : env('password'),
+    'bodyId' : env('bodyId'),
+}
+
+# Custom User Model
 AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_REDIRECT_URL = 'HomePage'
